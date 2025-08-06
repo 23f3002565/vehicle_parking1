@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>All Users</title></head>
+<body>
+    <h2>All Users</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ 'Admin' if user[2] else 'User' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('admin_dashboard') }}">← Back to Admin Dashboard</a>
+</body>
+</html>

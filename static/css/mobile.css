@@ -1,0 +1,135 @@
+/* Mobile-First Responsive Design */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 575.98px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section p {
+        font-size: 1rem;
+    }
+    
+    .stats-card {
+        margin-bottom: 1rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .main-content {
+        padding-top: 70px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .stats-card .number {
+        font-size: 2rem;
+    }
+    
+    .stats-card .icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+/* Touch-friendly buttons for mobile */
+@media (hover: none) and (pointer: coarse) {
+    .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .table tbody tr {
+        transition: none;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+    
+    .stats-card:hover {
+        transform: none;
+    }
+}
+
+/* Mobile Navigation */
+@media (max-width: 767.98px) {
+    .navbar-collapse {
+        background-color: rgba(0, 123, 255, 0.95);
+        margin-top: 0.5rem;
+        border-radius: 10px;
+        padding: 1rem;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.8rem 1rem !important;
+        margin: 0.2rem 0;
+    }
+    
+    .dropdown-menu {
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+}
+
+/* Mobile-specific utilities */
+.mobile-hidden {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .mobile-hidden {
+        display: block;
+    }
+    
+    .desktop-hidden {
+        display: none;
+    }
+}
+
+/* Swipe gestures for mobile tables */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile-friendly form spacing */
+@media (max-width: 575.98px) {
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-content {
+        border-radius: var(--border-radius);
+    }
+}

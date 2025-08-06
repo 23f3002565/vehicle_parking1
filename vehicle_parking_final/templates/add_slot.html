@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Parking Slot{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-center text-primary"><i class="bi bi-plus-circle-fill"></i> Add New Parking Slot</h2>
+
+<form method="POST" class="needs-validation" novalidate>
+    <div class="mb-3">
+        <label for="lot_id" class="form-label">Select Parking Lot</label>
+        <select class="form-select" name="lot_id" id="lot_id" required>
+            <option value="" disabled selected>Choose a lot</option>
+            {% for lot in lots %}
+                <option value="{{ lot[0] }}">{{ lot[1] }}</option>
+            {% endfor %}
+        </select>
+        <div class="invalid-feedback">
+            Please select a parking lot.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" class="form-control" name="location" id="location" required placeholder="Enter slot location">
+        <div class="invalid-feedback">
+            Location is required.
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="time" class="form-label">Time</label>
+        <input type="text" class="form-control" name="time" id="time" required placeholder="Enter availability time">
+        <div class="invalid-feedback">
+            Time is required.
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-success px-4">
+            <i class="bi bi-plus-circle"></i> Add Slot
+        </button>
+    </div>
+</form>
+
+<script>
+// Enable Bootstrap form validation styles
+(() => {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', e => {
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+</script>
+{% endblock %}

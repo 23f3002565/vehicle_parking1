@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Edit Lot{% endblock %}
+{% block content %}
+<h2>Edit Parking Lot</h2>
+<form method="POST">
+    <input type="text" name="lot_name" value="{{ lot[0] }}" required>
+    <input type="number" name="price" step="0.01" value="{{ lot[1] }}" required>
+    <button type="submit">Update Lot</button>
+</form>
+<p>Current number of spots: {{ spot_count }}</p>
+<form method="POST" action="/admin/edit_lot/{{ lot_id }}/spots">
+    <input type="number" name="new_spots" min="1" placeholder="Set total spots">
+    <button type="submit">Update Spots</button>
+</form>
+<a href="/admin/lots">⬅ Back to Lots</a>
+{% endblock %}

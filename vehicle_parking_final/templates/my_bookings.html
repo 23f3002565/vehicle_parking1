@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<h2>My Bookings</h2>
+<a href="/dashboard">⬅️ Back to Dashboard</a>
+<br><br>
+
+{% if bookings %}
+<table border="1" cellpadding="10">
+    <tr>
+        <th>ID</th>
+        <th>Slot ID</th>
+        <th>Vehicle Number</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Cost (₹)</th>
+        <th>Action</th>
+    </tr>
+    {% for b in bookings %}
+    <tr>
+        <td>{{ b[0] }}</td>  <!-- id -->
+        <td>{{ b[1] }}</td>  <!-- slot_id -->
+        <td>{{ b[2] }}</td>  <!-- vehicle_number -->
+        <td>{{ b[3] or '-' }}</td>  <!-- start_time -->
+        <td>{{ b[4] or '-' }}</td>  <!-- end_time -->
+        <td>
+            {% if b[5] is not none %}
+                ₹{{ '%.2f' | format(b[5]) }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+        <td>
+            {% if not b[4] %}
+                <a href="/user/release/{{ b[0] }}">Release</a>
+            {% else %}
+                Released
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>No bookings yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Lots{% endblock %}
+
+{% block content %}
+<h2>Manage Parking Lots</h2>
+
+<form method="POST">
+    <input type="text" name="lot_name" placeholder="Enter lot name" required>
+    <input type="number" name="price" step="0.01" placeholder="Price per hour" required>
+    <input type="number" name="num_spots" min="1" placeholder="Number of spots" required>
+    <button type="submit">Add Lot</button>
+</form>
+
+<br>
+
+<table border="1">
+    <tr><th>ID</th><th>Lot Name</th><th>Price (₹/hr)</th><th>Slots</th><th>Action</th></tr>
+    {% for lot in lot_data %}
+    <tr>
+        <td>{{ lot[0] }}</td>
+        <td>{{ lot[1] }}</td>
+        <td>{{ lot[2] }}</td>
+        <td>{{ lot[3] }}</td>
+        <td>
+            <a href="/admin/edit_lot/{{ lot[0] }}">✏️ Edit</a>
+            <a href="/admin/delete_lot/{{ lot[0] }}" onclick="return confirm('Delete lot and all its slots?')">❌ Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/admin/dashboard">⬅ Back to Dashboard</a>
+{% endblock %}

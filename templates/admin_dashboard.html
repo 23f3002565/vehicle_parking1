@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .dashboard-buttons a {
+    margin: 0 10px 10px 0;
+  }
+  .table th {
+    background-color: #e9ecef;
+  }
+  .status-occupied {
+    color: red;
+    font-weight: bold;
+  }
+  .status-available {
+    color: green;
+    font-weight: bold;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="fas fa-tools"></i> Admin Dashboard</h2>
+
+<div class="dashboard-buttons mb-4">
+  <a class="btn btn-success" href="/admin/add_slot">➕ Add Slot</a>
+  <a class="btn btn-primary" href="/admin/lots">🏙️ Manage Lots</a>
+  <a class="btn btn-warning" href="/admin/users">👥 View All Users</a>
+  <a class="btn btn-secondary" href="/admin/all_bookings">📋 All Bookings</a>
+  <a class="btn btn-danger" href="/logout">🚪 Logout</a>
+</div>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-success" role="alert">
+      {% for message in messages %}
+        {{ message }}<br>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<h4 class="mb-3">🅿️ All Parking Slots</h4>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover align-middle">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Lot Name</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Vehicle Number</th>
+        <th>User</th>
+        <th>Start Time</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for slot in slots %}
+      <tr>
+        <td>{{ slot[0] }}</td>
+        <td>{{ slot[1] }}</td>
+        <td>{{ slot[2] }}</td>
+        <td>
+          {% if slot[3] == 'O' %}
+            <span class="status-occupied">Occupied</span>
+          {% else %}
+            <span class="status-available">Available</span>
+          {% endif %}
+        </td>
+        <td>{{ slot[4] if slot[3] == 'O' else '-' }}</td>
+        <td>{{ slot[5] if slot[3] == 'O' else '-' }}</td>
+        <td>{{ slot[6] if slot[3] == 'O' else '-' }}</td>
+        <td>
+          <a class="btn btn-sm btn-danger" href="/admin/delete_slot/{{ slot[0] }}">
+            <i class="fas fa-trash-alt"></i> Delete
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<a class="btn btn-outline-info mt-3" href="/admin/lot_summary">
+  <i class="bi bi-bar-chart-fill"></i> Lot Summary
+</a>
+{% endblock %}

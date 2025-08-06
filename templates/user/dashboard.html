@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block title %}User Dashboard - ParkEasy{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1><i class="fas fa-user-circle"></i> Welcome, {{ username }}!</h1>
+                <p class="lead">Manage your parking bookings and find available slots.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Cards -->
+<section class="py-4">
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-md-3 col-6">
+                <div class="stats-card">
+                    <div class="icon text-primary">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="number">{{ active_bookings|length }}</div>
+                    <div class="text-muted">Active Bookings</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stats-card">
+                    <div class="icon text-success">
+                        <i class="fas fa-parking"></i>
+                    </div>
+                    <div class="number">{{ available_slots }}</div>
+                    <div class="text-muted">Available Slots</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stats-card">
+                    <div class="icon text-info">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div class="number">{{ total_bookings }}</div>
+                    <div class="text-muted">Total Bookings</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stats-card">
+                    <div class="icon text-warning">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="number">{{ recent_lots|length }}</div>
+                    <div class="text-muted">Available Lots</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-plus-circle fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title">Book New Slot</h5>
+                        <p class="card-text">Find and book an available parking slot</p>
+                        <a href="/user/book" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-list fa-3x text-success mb-3"></i>
+                        <h5 class="card-title">My Bookings</h5>
+                        <p class="card-text">View and manage your current bookings</p>
+                        <a href="/user/bookings" class="btn btn-success">
+                            <i class="fas fa-eye"></i> View Bookings
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-edit fa-3x text-info mb-3"></i>
+                        <h5 class="card-title">Profile</h5>
+                        <p class="card-text">Update your profile and settings</p>
+                        <a href="/profile" class="btn btn-info">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Bookings -->
+        {% if active_bookings %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-car"></i> Your Active Bookings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Parking Lot</th>
+                                        <th>Location</th>
+                                        <th>Vehicle Number</th>
+                                        <th>Start Time</th>
+                                        <th>Cost</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for booking in active_bookings %}
+                                    <tr>
+                                        <td>{{ booking[0] }}</td>
+                                        <td>{{ booking[1] }}</td>
+                                        <td>{{ booking[2] }}</td>
+                                        <td>{{ booking[3] }}</td>
+                                        <td>{{ booking[4] }}</td>
+                                        <td>${{ booking[5] }}</td>
+                                        <td>
+                                            <a href="/user/release/{{ booking[0] }}" 
+                                               class="btn btn-sm btn-danger"
+                                               onclick="return confirm('Are you sure you want to release this booking?')">
+                                                <i class="fas fa-sign-out-alt"></i> Release
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-info-circle fa-3x text-muted mb-3"></i>
+                        <h5>No Active Bookings</h5>
+                        <p class="text-muted">You don't have any active parking bookings at the moment.</p>
+                        <a href="/user/book" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Book Your First Slot
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Available Lots -->
+        {% if recent_lots %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-building"></i> Available Parking Lots</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            {% for lot in recent_lots %}
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">
+                                            <i class="fas fa-building text-primary"></i> {{ lot[1] }}
+                                        </h6>
+                                        <p class="card-text">
+                                            <strong>Price:</strong> ${{ lot[2] }}/hour
+                                        </p>
+                                        <a href="/user/book" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-calendar-plus"></i> Book Here
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-refresh data every 30 seconds
+setInterval(function() {
+    fetch('/api/dashboard-stats')
+    .then(response => response.json())
+    .then(data => {
+        if (data.available_slots !== undefined) {
+            document.querySelector('.stats-card .number').textContent = data.available_slots;
+        }
+    })
+    .catch(error => console.log('Refresh failed:', error));
+}, 30000);
+
+// Add loading states to buttons
+document.querySelectorAll('a[href*="release"]').forEach(link => {
+    link.addEventListener('click', function() {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Releasing...';
+        this.classList.add('disabled');
+    });
+});
+</script>
+{% endblock %}

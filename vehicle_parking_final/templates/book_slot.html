@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Parking Slot{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 520px;">
+  <div class="card shadow mt-5">
+    <div class="card-header text-white bg-primary text-center">
+      <h4><i class="bi bi-calendar-plus"></i> Book a Parking Slot</h4>
+    </div>
+    <div class="card-body">
+      <form method="POST">
+        <div class="mb-3">
+          <label for="lot_id" class="form-label"><i class="bi bi-building"></i> Select Parking Lot</label>
+          <select name="lot_id" id="lot_id" class="form-select" required>
+            {% for lot in lots %}
+              <option value="{{ lot[0] }}">{{ lot[1] }} — ₹{{ lot[2] }}/hr</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="vehicle_number" class="form-label"><i class="bi bi-truck"></i> Vehicle Number</label>
+          <input type="text" name="vehicle_number" id="vehicle_number" class="form-control" placeholder="Enter your vehicle number" required>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">
+          <i class="bi bi-check-circle-fill"></i> Book Slot
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

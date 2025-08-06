@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - ParkEasy{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1><i class="fas fa-car"></i> Welcome to ParkEasy</h1>
+                <p class="lead">Smart parking solution for the modern world. Find, book, and manage parking slots with ease.</p>
+                {% if not session.username %}
+                    <a href="/register" class="btn btn-light btn-lg me-3">Get Started</a>
+                    <a href="/login" class="btn btn-outline-light btn-lg">Login</a>
+                {% else %}
+                    <a href="/dashboard" class="btn btn-light btn-lg">Go to Dashboard</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-5 fw-bold">Why Choose ParkEasy?</h2>
+                <p class="lead text-muted">Experience the future of parking management</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="stats-card animate-fadeInUp">
+                    <div class="icon text-primary">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4>Easy Search</h4>
+                    <p class="text-muted">Find available parking slots near you in seconds</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card animate-fadeInUp" style="animation-delay: 0.2s;">
+                    <div class="icon text-success">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Mobile Friendly</h4>
+                    <p class="text-muted">Book and manage your parking from any device</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card animate-fadeInUp" style="animation-delay: 0.4s;">
+                    <div class="icon text-warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>Real-time Updates</h4>
+                    <p class="text-muted">Get instant notifications about your parking status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stats-card">
+                    <div class="icon text-primary">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="number">{{ stats.total_lots or 0 }}</div>
+                    <div class="text-muted">Parking Lots</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stats-card">
+                    <div class="icon text-success">
+                        <i class="fas fa-parking"></i>
+                    </div>
+                    <div class="number">{{ stats.total_slots or 0 }}</div>
+                    <div class="text-muted">Total Slots</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stats-card">
+                    <div class="icon text-info">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="number">{{ stats.total_users or 0 }}</div>
+                    <div class="text-muted">Active Users</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-4">
+                <div class="stats-card">
+                    <div class="icon text-warning">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="number">{{ stats.total_bookings or 0 }}</div>
+                    <div class="text-muted">Total Bookings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+{% if not session.username %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <h3>Ready to Get Started?</h3>
+                        <p class="text-muted mb-4">Join thousands of users who trust ParkEasy for their parking needs</p>
+                        <a href="/register" class="btn btn-primary btn-lg me-3">Create Account</a>
+                        <a href="/login" class="btn btn-outline-primary btn-lg">Sign In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Animate numbers on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const numbers = document.querySelectorAll('.number');
+    numbers.forEach(number => {
+        const target = parseInt(number.textContent);
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            number.textContent = Math.floor(current);
+        }, 20);
+    });
+});
+</script>
+{% endblock %}

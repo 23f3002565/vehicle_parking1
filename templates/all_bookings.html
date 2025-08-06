@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}All Bookings{% endblock %}
+
+{% block head_extra %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 90%;
+        margin: auto;
+    }
+    th, td {
+        border: 1px solid #999;
+        padding: 8px 12px;
+        text-align: center;
+    }
+    th {
+        background-color: #ddd;
+    }
+    h2 {
+        text-align: center;
+    }
+    a.back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        text-decoration: none;
+        color: #333;
+    }
+    a.back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>All Bookings</h2>
+<table>
+    <tr>
+        <th>Booking ID</th>
+        <th>User</th>
+        <th>Slot ID</th>
+        <th>Vehicle Number</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Cost</th>
+    </tr>
+    {% for booking in bookings %}
+    <tr>
+        <td>{{ booking[0] }}</td>
+        <td>{{ booking[1] }}</td>
+        <td>{{ booking[2] }}</td>
+        <td>{{ booking[3] }}</td>
+        <td>{{ booking[4] or '—' }}</td>
+        <td>{{ booking[5] or '—' }}</td>
+        <td>{{ booking[6] or '—' }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a class="back-link" href="/admin/dashboard">← Back to Admin Dashboard</a>
+{% endblock %}
+

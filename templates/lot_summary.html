@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Lot Summary{% endblock %}
+{% block content %}
+<h2>Parking Lot Summary</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Lot Name</th>
+        <th>Number of Slots</th>
+        <th>Price per Hour (₹)</th>
+    </tr>
+    {% for row in summary %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/admin/dashboard">⬅️ Back to Dashboard</a>
+{% endblock %}

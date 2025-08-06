@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Vehicle Parking{% endblock %}
+
+{% block content %}
+<div class="text-center">
+  <h1 class="mb-3"><i class="bi bi-car-front-fill"></i> Welcome to the Vehicle Parking App</h1>
+  <p class="lead text-muted mb-4">Easily book and manage parking slots with just a few clicks.</p>
+
+  <div class="d-flex justify-content-center gap-3">
+    <a href="/login" class="btn btn-primary btn-lg shadow-sm">
+      <i class="bi bi-box-arrow-in-right"></i> Login
+    </a>
+    <a href="/register" class="btn btn-outline-secondary btn-lg shadow-sm">
+      <i class="bi bi-person-plus-fill"></i> Register
+    </a>
+  </div>
+</div>
+{% endblock %}

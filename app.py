@@ -4,9 +4,13 @@ from datetime import datetime, timedelta
 from models.user_model import init_db, add_user, check_user
 from models.slot_model import init_slot_db, add_slot, get_all_slots, delete_slot, get_lot_slot_counts, get_lot_slot_summary
 from models.booking_model import init_booking_db, add_booking, get_user_bookings, release_booking
+from flask_socketio import SocketIO, emit, join_room, leave_room
+from models.chat_model import init_chat_db, add_message, get_recent_messages, get_online_users
+import json
 
 app = Flask(__name__)
 app.secret_key = 'secret123'
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 #  Seed admin user
 def seed_admin():
@@ -24,6 +28,7 @@ def seed_admin():
 init_db()
 init_slot_db()
 init_booking_db()
+init_chat_db()
 seed_admin()
 
 # ---------------- PUBLIC ROUTES ----------------
@@ -522,7 +527,80 @@ def get_notifications():
     
     return jsonify(notifications)
 
+# ---------------- CHAT ROUTES ----------------
+
+@app.route('/chat')
+def chat():
+    if 'username' not in session:
+        flash("Please login to access chat!")
+        return redirect('/login')
+    
+    messages = get_recent_messages()
+    online_users = get_online_users()
+    
+    return render_template('chat.html', 
+                         messages=messages, 
+                         online_users=online_users,
+                         current_user=session['username'],
+                         is_admin=session.get('is_admin', 0))
+
+@app.route('/api/chat/messages')
+def get_chat_messages():
+    if 'username' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    messages = get_recent_messages()
+    return jsonify([{
+        'username': msg[0],
+        'message': msg[1],
+        'timestamp': msg[2],
+        'is_admin': msg[3]
+    } for msg in messages])
+
+# SocketIO Events
+@socketio.on('connect')
+def on_connect():
+    if 'username' in session:
+        join_room('general_chat')
+        emit('status', {
+            'msg': f"{session['username']} has entered the chat.",
+            'username': session['username'],
+            'is_admin': session.get('is_admin', 0)
+        }, room='general_chat')
+
+@socketio.on('disconnect')
+def on_disconnect():
+    if 'username' in session:
+        leave_room('general_chat')
+        emit('status', {
+            'msg': f"{session['username']} has left the chat.",
+            'username': session['username']
+        }, room='general_chat')
+
+@socketio.on('message')
+def handle_message(data):
+    if 'username' not in session:
+        return
+    
+    username = session['username']
+    message = data['message']
+    is_admin = session.get('is_admin', 0)
+    
+    # Save to database
+    add_message(username, message, is_admin)
+    
+    # Broadcast to all users
+    emit('message', {
+        'username': username,
+        'message': message,
+        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'is_admin': is_admin
+    }, room='general_chat')
+
 # ---------------- RUN ----------------
 
+# Replace the existing if __name__ == '__main__': section with this
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    socketio.run(app, host='0.0.0.0', port=port, debug=True)

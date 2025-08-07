@@ -35,3 +35,40 @@ body {
     color: #444;
     font-weight: bold;
 }
+/* Add to the style section in base.html */
+.message-item {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+.message-item:last-child {
+    border-bottom: none;
+}
+
+.avatar {
+    width: 30px;
+    text-align: center;
+}
+
+.message-content {
+    word-wrap: break-word;
+}
+
+.message-header {
+    margin-bottom: 0.25rem;
+}
+
+.message-text {
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+#messages-container {
+    background: #fafafa;
+}
+
+.chat-rules {
+    font-size: 0.85rem;
+}
